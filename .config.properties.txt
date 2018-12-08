@@ -1,0 +1,4 @@
+server=localhost
+database=projectAkhir
+username="root"
+password=""
