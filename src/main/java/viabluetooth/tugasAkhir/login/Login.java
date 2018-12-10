@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import viabluetooth.tugasAkhir.menu.MenuLogin;
+import viabluetooth.tugasAkhir.register.DaftarAkun;
 /**
  *
  * @author User
@@ -50,7 +52,7 @@ public class Login extends javax.swing.JFrame {
         txt_name = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btn_daftar = new javax.swing.JButton();
         txt_pass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -72,7 +74,12 @@ public class Login extends javax.swing.JFrame {
 
         jLabel5.setText("Belum punya akun ?");
 
-        jButton2.setText("Daftar disini");
+        btn_daftar.setText("Daftar disini");
+        btn_daftar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_daftarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,7 +88,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2))
+                .addComponent(btn_daftar))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -124,7 +131,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jButton2))
+                    .addComponent(btn_daftar))
                 .addGap(20, 20, 20))
         );
 
@@ -139,6 +146,9 @@ public class Login extends javax.swing.JFrame {
             if(rs.next()){
                 if(txt_name.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password"))){
                     JOptionPane.showMessageDialog(null, "berhasil login");
+                    MenuLogin menu = new MenuLogin();
+                    menu.setVisible(true);
+                    this.setVisible(false);
                 }
             }else{
                     JOptionPane.showMessageDialog(null, "username atau password salah");
@@ -147,6 +157,13 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_daftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_daftarActionPerformed
+        // TODO add your handling code here:
+        DaftarAkun daftar = new DaftarAkun();
+        daftar.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_daftarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,8 +202,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_daftar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
