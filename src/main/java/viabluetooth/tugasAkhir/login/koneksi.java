@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package viabluetooth.tugasAkhir.lib;
+package viabluetooth.tugasAkhir.login;
 
 /**
  *
@@ -21,7 +21,7 @@ public class koneksi {
     public void config(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost/malasngoding", "root", "");
+            con=DriverManager.getConnection("jdbc:mysql://localhost/pbo_pa", "root", "");
             stm = con.createStatement();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "koneksi gagal "+e.getMessage());
