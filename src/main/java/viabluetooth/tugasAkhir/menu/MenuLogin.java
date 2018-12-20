@@ -1,5 +1,22 @@
 package viabluetooth.tugasAkhir.menu;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import viabluetooth.tugasAkhir.booking.booking;
+import viabluetooth.tugasAkhir.koneksi.koneksi;
+import viabluetooth.tugasAkhir.login.Login;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,11 +29,25 @@ package viabluetooth.tugasAkhir.menu;
  */
 public class MenuLogin extends javax.swing.JFrame {
 
+    int code;
+    DateFormat dateFormat;
+    Date date;
+    boolean enable = true;
+    DefaultTableModel tabel = new DefaultTableModel();
     /**
      * Creates new form MenuLogin
      */
     public MenuLogin() {
         initComponents();
+        tampil_combo();
+        txt_trans.setEnabled(false);
+        txt_hari.setEnabled(false);
+        mbl_combobox.setEnabled(false);
+        txt_plat.setEnabled(false);
+        txt_harga.setEnabled(false);
+        jDateChooser1.setEnabled(false);
+        jRadio_ya.setEnabled(false);
+        jRadio_tidak.setEnabled(false);
     }
 
     /**
@@ -28,17 +59,30 @@ public class MenuLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        btn_group = new javax.swing.ButtonGroup();
         jFileChooser1 = new javax.swing.JFileChooser();
+        jColorChooser1 = new javax.swing.JColorChooser();
+        jFileChooser2 = new javax.swing.JFileChooser();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        btn_cetak = new javax.swing.JButton();
+        mbl_combobox = new javax.swing.JComboBox<>();
+        txt_hari = new javax.swing.JTextField();
+        jRadio_ya = new javax.swing.JRadioButton();
+        jRadio_tidak = new javax.swing.JRadioButton();
+        btn_booking = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txt_trans = new javax.swing.JTextField();
+        btn_new = new javax.swing.JButton();
+        btn_batal = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel7 = new javax.swing.JLabel();
+        txt_plat = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txt_harga = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,81 +94,222 @@ public class MenuLogin extends javax.swing.JFrame {
 
         jLabel4.setText("Sewa Sopir");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mitsubishi Pajero 2017", "Toyota All New Innova 2017", "Toyota All New Avanza 2016", "Daihatsu Cayla 2017", "Daihatsu Xenia  2015" }));
-
-        jRadioButton1.setText("Pakai");
-
-        jRadioButton2.setText("Tidak Pakai");
-
-        btn_cetak.setText("Cetak Struk");
-        btn_cetak.addActionListener(new java.awt.event.ActionListener() {
+        mbl_combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-pilih mobil-" }));
+        mbl_combobox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cetakActionPerformed(evt);
+                mbl_comboboxActionPerformed(evt);
             }
         });
+
+        btn_group.add(jRadio_ya);
+        jRadio_ya.setText("Pakai");
+
+        btn_group.add(jRadio_tidak);
+        jRadio_tidak.setText("Tidak Pakai");
+
+        btn_booking.setText("booking");
+        btn_booking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_bookingActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("No. Transaksi");
+
+        btn_new.setText("New");
+        btn_new.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newActionPerformed(evt);
+            }
+        });
+
+        btn_batal.setText("batal");
+        btn_batal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_batalActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Tanggal Pinjam ");
+
+        jDateChooser1.setDateFormatString("yyyy, MM, dd");
+        jDateChooser1.setMaxSelectableDate(new java.util.Date(1546189200000L));
+        jDateChooser1.setMinSelectableDate(new java.util.Date(1514739600000L));
+
+        jLabel7.setText("No. Plat");
+
+        txt_plat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_platActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Harga Sewa");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jRadioButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(36, 36, 36))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(131, 131, 131))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(131, 131, 131))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btn_cetak)
-                        .addGap(62, 62, 62))))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jRadio_ya)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadio_tidak))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txt_trans, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_new, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_hari)
+                    .addComponent(txt_harga)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_batal)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_booking))
+                    .addComponent(mbl_combobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_plat))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel5)
+                    .addComponent(txt_trans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_new))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel2)
+                    .addComponent(mbl_combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(btn_cetak)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txt_plat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txt_harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txt_hari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadio_ya)
+                    .addComponent(jLabel4)
+                    .addComponent(jRadio_tidak))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_batal)
+                    .addComponent(btn_booking))
+                .addGap(78, 78, 78))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetakActionPerformed
+    private void btn_bookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_cetakActionPerformed
+        booking bkg = new booking();
+        bkg.setEnabled(true);
+        this.setEnabled(false);
+    }//GEN-LAST:event_btn_bookingActionPerformed
 
+    private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
+        // TODO add your handling code here:
+        code++;//menampilkan date format serta no pembelian
+        DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+        txt_trans.setText(dateFormat.format(date)+String.format("%02d", code));
+        txt_trans.setEnabled(false);
+        btn_new.setEnabled(false);
+        mbl_combobox.setEnabled(true);
+        txt_plat.setEnabled(false);
+        txt_harga.setEnabled(false);
+        txt_hari.setEnabled(true);
+        jRadio_ya.setEnabled(true);
+        jRadio_tidak.setEnabled(true);
+        jDateChooser1.setEnabled(true);
+        btn_booking.setEnabled(true);
+        btn_batal.setEnabled(true);
+    }//GEN-LAST:event_btn_newActionPerformed
+
+    private void btn_batalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_batalActionPerformed
+        // TODO add your handling code here:
+        new MenuLogin().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_batalActionPerformed
+
+    private void txt_platActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_platActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_platActionPerformed
+
+    private void mbl_comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbl_comboboxActionPerformed
+        // TODO add your handling code here:
+        tampil();
+    }//GEN-LAST:event_mbl_comboboxActionPerformed
+
+    public void tampil_combo(){
+            try {
+                Connection con = koneksi.getConnection();
+                Statement stat = con.createStatement();
+                String query = "SELECT nama FROM mobil ORDER BY nama ASC";
+                ResultSet rs = stat.executeQuery(query);
+
+                while(rs.next()){
+                    Object[] ob = new Object[3];
+                    ob[0] = rs.getString(1);
+                    mbl_combobox.addItem((String) ob[0]);                           
+                }
+              } catch (Exception e) {
+                    System.out.println(e.getMessage());
+            }
+    }
+    
+    public void tampil()
+    {
+        try {
+        Connection con = koneksi.getConnection();
+        Statement stat = con.createStatement();
+        String query = "SELECT plat, harga FROM mobil WHERE nama='"+mbl_combobox.getSelectedItem()+"'";  
+        ResultSet rs = stat.executeQuery(query);
+        
+            while(rs.next()){
+                Object[] ob = new Object[3];
+                ob[0]=  rs.getString(1);
+                ob[1]= rs.getString(2);
+
+                txt_plat.setText((String) ob[0]);
+                txt_harga.setText((String) ob[1]);
+            }
+         
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }              
+    }
     /**
      * @param args the command line arguments
      */
@@ -162,16 +347,29 @@ public class MenuLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cetak;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btn_batal;
+    private javax.swing.JButton btn_booking;
+    private javax.swing.ButtonGroup btn_group;
+    private javax.swing.JButton btn_new;
+    private datechooser.beans.DateChooserCombo dateChooserCombo1;
+    private javax.swing.JColorChooser jColorChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JRadioButton jRadio_tidak;
+    private javax.swing.JRadioButton jRadio_ya;
+    private javax.swing.JComboBox<String> mbl_combobox;
+    private javax.swing.JTextField txt_harga;
+    private javax.swing.JTextField txt_hari;
+    private javax.swing.JTextField txt_plat;
+    private javax.swing.JTextField txt_trans;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,11 +6,17 @@ package viabluetooth.tugasAkhir.login;
  * and open the template in the editor.
  */
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import viabluetooth.tugasAkhir.menu.MenuLogin;
 import viabluetooth.tugasAkhir.register.DaftarAkun;
+import viabluetooth.tugasAkhir.koneksi.koneksi;
+
 /**
  *
  * @author User
@@ -21,18 +27,11 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     // deklarasi
-    Connection con;
-    Statement stat;
-    ResultSet rs;
-    String sql;
     
     public Login() {
         initComponents();
         //pemanggilan fungsi koneksi database yang sudah kita buat pada class koneksi.java
-        koneksi DB = new koneksi();
-        DB.config();
-        con = DB.con;
-        stat = DB.stm;
+        
     }
     
 
@@ -49,17 +48,18 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txt_name = new javax.swing.JTextField();
+        txt_user = new javax.swing.JTextField();
         btn_login = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         btn_daftar = new javax.swing.JButton();
         txt_pass = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("SELAMAT DATANG DI MAGNUM RENT CAR KOTA MALANG");
+        jLabel1.setText("SELAMAT DATANG");
 
-        jLabel2.setText("LOGIN");
+        jLabel2.setText("Login Akun");
 
         jLabel3.setText("Username");
 
@@ -81,58 +81,69 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText(" DI MAGNUM RENT CAR KOTA MALANG");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_daftar))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jLabel4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel2))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(btn_login))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_pass, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(txt_name)))
+                        .addGap(100, 100, 100)
+                        .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(btn_login))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_daftar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))))
+                .addContainerGap(89, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(81, 81, 81))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel6)
+                .addGap(23, 23, 23)
                 .addComponent(jLabel2)
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
+                .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
                 .addComponent(btn_login)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(btn_daftar))
-                .addGap(20, 20, 20))
+                    .addComponent(btn_daftar)
+                    .addComponent(jLabel5))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,22 +151,34 @@ public class Login extends javax.swing.JFrame {
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         // TODO add your handling code here:
+        PreparedStatement ps;
+        ResultSet rs;
+        String username = txt_user.getText();
+        String pass = String.valueOf(txt_pass.getPassword());
+        
+        String query = "SELECT * FROM `users` WHERE `username` =? AND `password` =?";
         try {
-            sql = "SELECT * FROM login WHERE username='"+txt_name.getText()+"' AND password='"+txt_pass.getText()+"'";
-            rs = stat.executeQuery(sql);
+            ps = koneksi.getConnection().prepareStatement(query);
+            
+            ps.setString(1, username);
+            ps.setString(2, pass);
+            
+            rs = ps.executeQuery();
+            
             if(rs.next()){
-                if(txt_name.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password"))){
-                    JOptionPane.showMessageDialog(null, "berhasil login");
-                    MenuLogin menu = new MenuLogin();
-                    menu.setVisible(true);
-                    this.setVisible(false);
-                } 
-            }else{
-                    JOptionPane.showMessageDialog(null, "username atau password salah");
-                }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+                JOptionPane.showMessageDialog(null, "Berhasil Login ");
+                MenuLogin ml = new MenuLogin();
+                ml.setVisible(true);
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Username atau Password Salah");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
     }//GEN-LAST:event_btn_loginActionPerformed
 
     private void btn_daftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_daftarActionPerformed
@@ -209,7 +232,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txt_name;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPasswordField txt_pass;
+    private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 }
