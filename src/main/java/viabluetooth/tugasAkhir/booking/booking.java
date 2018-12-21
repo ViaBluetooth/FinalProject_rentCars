@@ -5,6 +5,23 @@
  */
 package viabluetooth.tugasAkhir.booking;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ButtonModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import viabluetooth.tugasAkhir.booking.booking;
+import viabluetooth.tugasAkhir.koneksi.koneksi;
+import viabluetooth.tugasAkhir.login.Login;
 /**
  *
  * @author User
@@ -16,8 +33,52 @@ public class booking extends javax.swing.JFrame {
      */
     public booking() {
         initComponents();
+        tampil_combo();
+        txt_trans.setEnabled(false);
+        txt_mobil.setEnabled(false);
+        txt_date.setEnabled(false);
     }
 
+    public void tampil_combo(){
+            try {
+                Connection con = koneksi.getConnection();
+                Statement stat = con.createStatement();
+                String query = "SELECT id FROM booking ORDER BY id ASC";
+                ResultSet rs = stat.executeQuery(query);
+
+                while(rs.next()){
+                    Object[] ob = new Object[3];
+                    ob[0] = rs.getString(1);
+                    id_combo.addItem((String) ob[0]);                           
+                }
+              } catch (Exception e) {
+                    System.out.println(e.getMessage());
+            }
+    }
+    
+    public void tampil()
+    {
+        try {
+        Connection con = koneksi.getConnection();
+        Statement stat = con.createStatement();
+        String query = "SELECT no_trans, nama_mobil, tgl_pinjam FROM booking WHERE id='"+id_combo.getSelectedItem()+"'";  
+        ResultSet rs = stat.executeQuery(query);
+        
+            while(rs.next()){
+                Object[] ob = new Object[3];
+                ob[0]=  rs.getString(1);
+                ob[1]= rs.getString(2);
+                ob[2]= rs.getString(3);                
+
+                txt_trans.setText((String) ob[0]);
+                txt_mobil.setText((String) ob[1]);
+                txt_date.setText((String) ob[2]);
+            }
+         
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }              
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,11 +96,13 @@ public class booking extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txt_nama = new javax.swing.JTextField();
+        txt_mobil = new javax.swing.JTextField();
+        txt_date = new javax.swing.JTextField();
+        btn_cetak = new javax.swing.JButton();
+        id_combo = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        txt_trans = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,25 +110,33 @@ public class booking extends javax.swing.JFrame {
 
         jLabel2.setText("MAGNUM RENT CAR MALANG");
 
-        jLabel3.setText("No. Transaksi");
+        jLabel3.setText("ID ");
 
-        jLabel4.setText("Nama");
+        jLabel4.setText("Nama Pelanggan");
 
         jLabel5.setText("Mobil");
 
         jLabel6.setText("Tanggal Sewa");
 
-        jLabel8.setText("BAWA BUKTI INI SAAT MENGAMBIL MOBIL DI MAGNUM RENT CAR");
+        jLabel8.setText("NB : BAWA BUKTI INI SAAT MENGAMBIL MOBIL DI MAGNUM RENT CAR");
 
         jLabel9.setText("PEMBAYARAN BISA LANGSUNG DI TEMPAT");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        btn_cetak.setText("Cetak");
+        btn_cetak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                btn_cetakActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Cetak");
+        id_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-pilih id anda-" }));
+        id_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                id_comboActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("No Transaksi");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,62 +145,67 @@ public class booking extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6))
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(56, 56, 56)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3))))
+                            .addComponent(txt_date)
+                            .addComponent(id_combo, 0, 171, Short.MAX_VALUE)
+                            .addComponent(txt_nama)
+                            .addComponent(txt_mobil)
+                            .addComponent(txt_trans))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(btn_cetak))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel9)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(id_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txt_trans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_mobil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jButton1)))
+                        .addGap(125, 125, 125)
+                        .addComponent(btn_cetak)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                    .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
@@ -139,9 +215,24 @@ public class booking extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void btn_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetakActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        //Menampilkan hasil yang di eksekusi
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nama Pelanggan: ").append(txt_nama.getText()).append("\n");
+        sb.append("No. Transaksi : ").append(txt_trans.getText()).append("\n");
+        sb.append("Mobil Di Sewa : ").append(txt_mobil.getText()).append("\n");
+        sb.append("Tanggal Sewa  : ").append(txt_date.getText()).append("\n");
+        sb.append("\n");
+        sb.append("\n");
+        sb.append("NB : Screenshoot Reservasi ini untuk dibawa ke Persewaan");
+        JOptionPane.showMessageDialog(this, sb, "Detail Reservasi",JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btn_cetakActionPerformed
+
+    private void id_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_id_comboActionPerformed
+        // TODO add your handling code here:
+        tampil();
+    }//GEN-LAST:event_id_comboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,18 +270,20 @@ public class booking extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_cetak;
+    private javax.swing.JComboBox<String> id_combo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField txt_date;
+    private javax.swing.JTextField txt_mobil;
+    private javax.swing.JTextField txt_nama;
+    private javax.swing.JTextField txt_trans;
     // End of variables declaration//GEN-END:variables
 }

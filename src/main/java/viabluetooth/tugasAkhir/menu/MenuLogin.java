@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import viabluetooth.tugasAkhir.booking.booking;
 import viabluetooth.tugasAkhir.koneksi.koneksi;
@@ -34,6 +36,7 @@ public class MenuLogin extends javax.swing.JFrame {
     Date date;
     boolean enable = true;
     DefaultTableModel tabel = new DefaultTableModel();
+    private String jasa;
     /**
      * Creates new form MenuLogin
      */
@@ -45,7 +48,7 @@ public class MenuLogin extends javax.swing.JFrame {
         mbl_combobox.setEnabled(false);
         txt_plat.setEnabled(false);
         txt_harga.setEnabled(false);
-        jDateChooser1.setEnabled(false);
+        txt_tgl.setEnabled(false);
         jRadio_ya.setEnabled(false);
         jRadio_tidak.setEnabled(false);
     }
@@ -78,7 +81,7 @@ public class MenuLogin extends javax.swing.JFrame {
         btn_new = new javax.swing.JButton();
         btn_batal = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        txt_tgl = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         txt_plat = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -103,9 +106,19 @@ public class MenuLogin extends javax.swing.JFrame {
 
         btn_group.add(jRadio_ya);
         jRadio_ya.setText("Pakai");
+        jRadio_ya.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadio_yaActionPerformed(evt);
+            }
+        });
 
         btn_group.add(jRadio_tidak);
         jRadio_tidak.setText("Tidak Pakai");
+        jRadio_tidak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadio_tidakActionPerformed(evt);
+            }
+        });
 
         btn_booking.setText("booking");
         btn_booking.addActionListener(new java.awt.event.ActionListener() {
@@ -132,9 +145,9 @@ public class MenuLogin extends javax.swing.JFrame {
 
         jLabel6.setText("Tanggal Pinjam ");
 
-        jDateChooser1.setDateFormatString("yyyy, MM, dd");
-        jDateChooser1.setMaxSelectableDate(new java.util.Date(1546189200000L));
-        jDateChooser1.setMinSelectableDate(new java.util.Date(1514739600000L));
+        txt_tgl.setDateFormatString("yyyy-MM-dd");
+        txt_tgl.setMaxSelectableDate(new java.util.Date(1546189200000L));
+        txt_tgl.setMinSelectableDate(new java.util.Date(1514739600000L));
 
         jLabel7.setText("No. Plat");
 
@@ -176,7 +189,7 @@ public class MenuLogin extends javax.swing.JFrame {
                         .addComponent(btn_new, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txt_hari)
                     .addComponent(txt_harga)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_tgl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_batal)
                         .addGap(18, 18, 18)
@@ -210,7 +223,7 @@ public class MenuLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_tgl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -232,17 +245,108 @@ public class MenuLogin extends javax.swing.JFrame {
 
     private void btn_bookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookingActionPerformed
         // TODO add your handling code here:
-        booking bkg = new booking();
-        bkg.setEnabled(true);
-        this.setEnabled(false);
+        String no_trans = txt_trans.getText();
+        String value = mbl_combobox.getSelectedItem().toString();
+        String plat = txt_plat.getText();
+        String tgl = ((JTextField) txt_tgl.getDateEditor().getUiComponent()).getText();
+        
+        if(value.equals("")){
+            JOptionPane.showMessageDialog(null, "Pilihlah Mobil");
+        } else if(tgl.equals("")){
+            JOptionPane.showMessageDialog(null, "Tentukan tanggal");
+        } else if(jasa.equals("")){
+            JOptionPane.showMessageDialog(null, "isi salah satu");
+/*        } else if(checkValid(tgl)){
+            JOptionPane.showMessageDialog(null, "Sudah Terbooking");
+            new MenuLogin().setVisible(true);
+            this.dispose();
+        } else if(checkMobil(value)){
+            JOptionPane.showMessageDialog(null, "Sudah Terbooking");
+            new MenuLogin().setVisible(true);
+            this.dispose();
+        } else if(checkValid(tgl) && (checkMobil(value))){
+            JOptionPane.showMessageDialog(null, "Sudah Terbooking");
+            new MenuLogin().setVisible(true);
+            this.dispose(); */
+        } else {
+            PreparedStatement ps;
+            String query = "INSERT INTO `booking`(`no_trans`, `nama_mobil`, `no_plat`, `tgl_pinjam`, `sopir`) VALUES (?,?,?,?,?)";
+
+            try {
+                ps = koneksi.getConnection().prepareStatement(query);
+                ps.setString(1, no_trans);
+                ps.setString(2, value);
+                ps.setString(3, plat);
+                ps.setString(4, tgl);
+                ps.setString(5, jasa);
+
+                if(ps.executeUpdate()>0){
+                    JOptionPane.showMessageDialog(null, "Berhasil Booking !");
+                    booking bkg = new booking();
+                    bkg.setVisible(true);
+                    this.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Booking Gagal !");
+                    new MenuLogin().setVisible(true);
+                    this.dispose();
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btn_bookingActionPerformed
+    
+    public boolean checkMobil(String nama){
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean checkMobil = false;
+        String query = "SELECT * FROM `booking` WHERE `nama` =?";
+        
+        try {
+            ps = koneksi.getConnection().prepareStatement(query);
+            ps.setString(1, nama);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                checkMobil = true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return checkMobil;
+    }
+    
+    public boolean checkValid(String tgl_pinjam){
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean checkValid = false;
+        String query = "SELECT * FROM `booking` WHERE `tgl_pinjam` =?";
+        
+        try {
+            ps = koneksi.getConnection().prepareStatement(query);
+            ps.setString(1, tgl_pinjam);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                checkValid = true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return checkValid;
+    }
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         // TODO add your handling code here:
-        code++;//menampilkan date format serta no pembelian
         DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
         Date date = new Date();
         System.out.println(dateFormat.format(date));
+        code++;
         txt_trans.setText(dateFormat.format(date)+String.format("%02d", code));
         txt_trans.setEnabled(false);
         btn_new.setEnabled(false);
@@ -252,7 +356,7 @@ public class MenuLogin extends javax.swing.JFrame {
         txt_hari.setEnabled(true);
         jRadio_ya.setEnabled(true);
         jRadio_tidak.setEnabled(true);
-        jDateChooser1.setEnabled(true);
+        txt_tgl.setEnabled(true);
         btn_booking.setEnabled(true);
         btn_batal.setEnabled(true);
     }//GEN-LAST:event_btn_newActionPerformed
@@ -271,6 +375,16 @@ public class MenuLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         tampil();
     }//GEN-LAST:event_mbl_comboboxActionPerformed
+
+    private void jRadio_yaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadio_yaActionPerformed
+        // TODO add your handling code here:
+        jasa="pakai";
+    }//GEN-LAST:event_jRadio_yaActionPerformed
+
+    private void jRadio_tidakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadio_tidakActionPerformed
+        // TODO add your handling code here:
+        jasa="tidak pakai";
+    }//GEN-LAST:event_jRadio_tidakActionPerformed
 
     public void tampil_combo(){
             try {
@@ -353,7 +467,6 @@ public class MenuLogin extends javax.swing.JFrame {
     private javax.swing.JButton btn_new;
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JColorChooser jColorChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JLabel jLabel1;
@@ -370,6 +483,7 @@ public class MenuLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txt_harga;
     private javax.swing.JTextField txt_hari;
     private javax.swing.JTextField txt_plat;
+    private com.toedter.calendar.JDateChooser txt_tgl;
     private javax.swing.JTextField txt_trans;
     // End of variables declaration//GEN-END:variables
 }

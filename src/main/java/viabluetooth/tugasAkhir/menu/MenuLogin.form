@@ -65,7 +65,7 @@
                   </Group>
                   <Component id="txt_hari" alignment="0" max="32767" attributes="0"/>
                   <Component id="txt_harga" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jDateChooser1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txt_tgl" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btn_batal" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -107,7 +107,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jDateChooser1" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_tgl" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -175,6 +175,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Pakai"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadio_yaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="jRadio_tidak">
       <Properties>
@@ -183,6 +186,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Tidak Pakai"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadio_tidakActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_booking">
       <Properties>
@@ -220,9 +226,9 @@
         <Property name="text" type="java.lang.String" value="Tanggal Pinjam "/>
       </Properties>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
+    <Component class="com.toedter.calendar.JDateChooser" name="txt_tgl">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="yyyy, MM, dd"/>
+        <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
         <Property name="maxSelectableDate" type="java.util.Date" editor="org.netbeans.beaninfo.editors.DateEditor">
           <SerializedValue value="-84,-19,0,5,115,114,0,14,106,97,118,97,46,117,116,105,108,46,68,97,116,101,104,106,-127,1,75,89,116,25,3,0,0,120,112,119,8,0,0,1,104,0,14,-38,-128,120"/>
         </Property>
