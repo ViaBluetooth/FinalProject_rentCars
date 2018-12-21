@@ -55,6 +55,7 @@ public class DaftarAkun extends javax.swing.JFrame {
         txt_pass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 204, 255));
 
         jLabel1.setText("DAFTAR AKUN");
 

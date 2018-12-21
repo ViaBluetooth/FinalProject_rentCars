@@ -256,18 +256,10 @@ public class MenuLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Tentukan tanggal");
         } else if(jasa.equals("")){
             JOptionPane.showMessageDialog(null, "isi salah satu");
-/*        } else if(checkValid(tgl)){
-            JOptionPane.showMessageDialog(null, "Sudah Terbooking");
-            new MenuLogin().setVisible(true);
-            this.dispose();
-        } else if(checkMobil(value)){
-            JOptionPane.showMessageDialog(null, "Sudah Terbooking");
-            new MenuLogin().setVisible(true);
-            this.dispose();
         } else if(checkValid(tgl) && (checkMobil(value))){
             JOptionPane.showMessageDialog(null, "Sudah Terbooking");
             new MenuLogin().setVisible(true);
-            this.dispose(); */
+            this.dispose(); 
         } else {
             PreparedStatement ps;
             String query = "INSERT INTO `booking`(`no_trans`, `nama_mobil`, `no_plat`, `tgl_pinjam`, `sopir`) VALUES (?,?,?,?,?)";
