@@ -5,15 +5,13 @@ package viabluetooth.tugasAkhir.admin;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import viabluetooth.tugasAkhir.menu.MenuLogin;
 import viabluetooth.tugasAkhir.koneksi.koneksi;
 
 /**
@@ -86,7 +84,7 @@ public class loginAdmin extends javax.swing.JFrame {
                         .addGap(152, 152, 152)
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
+                        .addGap(142, 142, 142)
                         .addComponent(btn_login)))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
@@ -129,8 +127,8 @@ public class loginAdmin extends javax.swing.JFrame {
             
             if(rs.next()){
                 JOptionPane.showMessageDialog(null, "Berhasil Login ");
-                DataEntryMobil dat = new DataEntryMobil();
-                dat.setVisible(true);
+                menu m = new menu();
+                m.setVisible(true);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");

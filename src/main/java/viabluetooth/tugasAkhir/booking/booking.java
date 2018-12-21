@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import viabluetooth.tugasAkhir.booking.booking;
 import viabluetooth.tugasAkhir.koneksi.koneksi;
 import viabluetooth.tugasAkhir.login.Login;
+import viabluetooth.tugasAkhir.menu.MenuLogin;
 /**
  *
  * @author User
@@ -212,6 +213,9 @@ public class booking extends javax.swing.JFrame {
         sb.append("\n");
         sb.append("NB : Screenshoot Reservasi ini untuk dibawa ke Persewaan");
         JOptionPane.showMessageDialog(this, sb, "Detail Reservasi",JOptionPane.INFORMATION_MESSAGE);
+        new MenuLogin().show();
+        this.dispose();
+        
     }//GEN-LAST:event_btn_cetakActionPerformed
 
     private void id_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_id_comboActionPerformed
